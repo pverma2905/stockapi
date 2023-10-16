@@ -1,7 +1,6 @@
 "use client"
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import React, { useEffect } from 'react';
@@ -10,21 +9,26 @@ export default function Home() {
   const [stock, setStock] = React.useState('');
   const [stocklabel, setStocklabel] = React.useState('');
   useEffect(() => {
-    console.log("test")
+    setInterval(() => {
+      console.log("call every minute")
+    }, 60000)
   }, [])
 
-  const handleChange = (event) => {
-    fetch("/api/getstockprice").then((res) => {
-
+  const getStockPrice = (stockname) => {
+    fetch(`/api/getstockprice?stockname=${stockname}`).then((res) => {
       return res.json()
     }).then((data) => {
       console.log(data)
-      setStock(data.price)
+      setStock(data.stockPrice)
     }).catch((err) => {
 
     }).finally(() => {
 
     })
+  }
+
+  const handleChange = (event) => {
+    getStockPrice(event.target.value)
     console.log(event.target.value)
     setStocklabel(event.target.value);
   };
@@ -51,22 +55,7 @@ export default function Home() {
           <MenuItem value="pnb">PNB</MenuItem>
         </Select>
       </FormControl>
-      {/* <FormControl sx={{ m: 1, minWidth: 120 }}>
-        <Select
-          value={age}
-          onChange={handleChange}
-          displayEmpty
-          inputProps={{ 'aria-label': 'Without label' }}
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
-        </Select>
-        <FormHelperText>Without label</FormHelperText>
-      </FormControl> */}
+
     </div>
   )
 }
