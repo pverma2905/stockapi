@@ -9,10 +9,17 @@ export default function Home() {
   const [stock, setStock] = React.useState('');
   const [stocklabel, setStocklabel] = React.useState('');
   useEffect(() => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       console.log("call every minute")
-    }, 60000)
+      getStockPrice('idfc')
+    }, 60000);
+
+    //Clearing the interval 
+    return () => clearInterval(interval);
+
   }, [])
+
+
 
   const getStockPrice = (stockname) => {
     fetch(`/api/getstockprice?stockname=${stockname}`).then((res) => {
